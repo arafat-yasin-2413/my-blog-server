@@ -1,0 +1,29 @@
+{
+  "name": "my-blog-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@types/node": "^25.5.1",
+    "@types/pg": "^8.20.0",
+    "dotenv": "^17.4.0",
+    "prisma": "^7.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/client": "^7.6.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
+  }
+}
