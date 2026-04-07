@@ -7,11 +7,13 @@ const getAllPost = async ({
     tags,
     isFeatured,
     status,
+    authorId,
 }: {
     search: string | undefined,
     tags: string[] | [],
     isFeatured: boolean | undefined,
     status: PostStatus | undefined,
+    authorId: string | undefined,
 }) => {
     const andConditions: PostWhereInput[] = [];
 
@@ -56,6 +58,12 @@ const getAllPost = async ({
     if(status) {
         andConditions.push({
             status
+        })
+    }
+
+    if(authorId) {
+        andConditions.push({
+            authorId
         })
     }
 
