@@ -5,9 +5,11 @@ import { prisma } from "../../lib/prisma";
 const getAllPost = async ({
     search,
     tags,
+    isFeatured,
 }: {
     search: string | undefined;
     tags: string[] | [];
+    isFeatured: boolean | undefined;
 }) => {
     const andConditions: PostWhereInput[] = [];
 
@@ -40,6 +42,12 @@ const getAllPost = async ({
             tags: {
                 hasEvery: tags as string[],
             },
+        });
+    }
+
+    if (typeof isFeatured === "boolean") {
+        andConditions.push({
+            isFeatured,
         });
     }
 

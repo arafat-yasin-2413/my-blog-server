@@ -6,9 +6,26 @@ const getAllPost = async (req: Request, res: Response) => {
         const { search } = req.query;
         const searchString = typeof search === "string" ? search : undefined;
 
-        const tags = req.query.tags ? (req.query.tags as string).split(","): [];
+        const tags = req.query.tags
+            ? (req.query.tags as string).split(",")
+            : [];
 
-        const result = await postServices.getAllPost({ search: searchString, tags });
+        // accepts only 'true' or 'false' values. spelling  incorrect hoile false hoite deua jabe na.
+        // banan vul dile isFeatured diye filtering kaj korbe na.
+        const isFeatured = req.query.isFeatured
+            ? req.query.isFeatured === "true"
+                ? true
+                : req.query.isFeatured === "false"
+                  ? false
+                  : undefined
+            : undefined;
+        // console.log('ISFEATURED : ',isFeatured, typeof(isFeatured));
+
+        const result = await postServices.getAllPost({
+            search: searchString,
+            tags,
+            isFeatured,
+        });
         return res.status(200).json(result);
     } catch (error) {
         return res.status(400).json({
