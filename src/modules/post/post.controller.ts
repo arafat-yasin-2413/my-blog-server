@@ -27,12 +27,25 @@ const getAllPost = async (req: Request, res: Response) => {
 
         const authorId = req.query.authorId as string | undefined;
 
+        const page = Number(req.query.page ?? 1);
+        const limit = Number(req.query.limit ?? 10);
+        const skip = (page - 1) * limit;
+
+        const sortBy = req.query.sortBy as string | undefined;
+        const sortOrder = req.query.sortOrder as string | undefined;
+    
+
         const result = await postServices.getAllPost({
             search: searchString,
             tags,
             isFeatured,
             status,
             authorId,
+            page,
+            limit,
+            skip,
+            sortBy,
+            sortOrder,
         });
         return res.status(200).json(result);
     } catch (error) {
@@ -46,7 +59,7 @@ const getAllPost = async (req: Request, res: Response) => {
 const createPost = async (req: Request, res: Response) => {
     try {
         const user = req.user;
-        console.log("user in create-post-controller : ", { user });
+        // console.log("user in create-post-controller : ", { user });
         if (!req.user) {
             return res.status(401).json({
                 error: "Unauthorized access",
