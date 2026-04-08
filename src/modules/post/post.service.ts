@@ -8,12 +8,22 @@ const getAllPost = async ({
     isFeatured,
     status,
     authorId,
+    page,
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
 }: {
-    search: string | undefined,
-    tags: string[] | [],
-    isFeatured: boolean | undefined,
-    status: PostStatus | undefined,
-    authorId: string | undefined,
+    search: string | undefined;
+    tags: string[] | [];
+    isFeatured: boolean | undefined;
+    status: PostStatus | undefined;
+    authorId: string | undefined;
+    page: number;
+    limit: number;
+    skip: number;
+    sortBy: string;
+    sortOrder: string;
 }) => {
     const andConditions: PostWhereInput[] = [];
 
@@ -55,24 +65,66 @@ const getAllPost = async ({
         });
     }
 
-    if(status) {
+    if (status) {
         andConditions.push({
-            status
-        })
+            status,
+        });
     }
 
-    if(authorId) {
+    if (authorId) {
         andConditions.push({
-            authorId
-        })
+            authorId,
+        });
     }
 
     const allPost = await prisma.post.findMany({
+        take: limit,
+        skip,
+        where: {
+            AND: andConditions,
+        },
+        orderBy: { [sortBy]: sortOrder },
+    });
+
+    const total = await prisma.post.count({
         where: {
             AND: andConditions,
         },
     });
-    return allPost;
+
+    return {
+        data: allPost,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        },
+    };
+};
+
+const getPostById = async (id: string) => {
+    return await prisma.$transaction(async (tx) => {
+        await tx.post.update({
+            where: {
+                id: id,
+            },
+            data: {
+                views: {
+                    increment: 1,
+                },
+            },
+        });
+
+        const postData = await tx.post.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        return postData;
+    });
+
+    // return result;
 };
 
 const createPost = async (
@@ -91,4 +143,5 @@ const createPost = async (
 export const postServices = {
     createPost,
     getAllPost,
+    getPostById,
 };

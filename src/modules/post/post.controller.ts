@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { postServices } from "./post.service";
 import { PostStatus } from "../../generated/prisma/enums";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
 const getAllPost = async (req: Request, res: Response) => {
     try {
@@ -22,10 +23,20 @@ const getAllPost = async (req: Request, res: Response) => {
             : undefined;
         // console.log('ISFEATURED : ',isFeatured, typeof(isFeatured));
 
-
         const status = req.query.status as PostStatus | undefined;
 
         const authorId = req.query.authorId as string | undefined;
+
+        // const page = Number(req.query.page ?? 1);
+        // const limit = Number(req.query.limit ?? 10);
+        // const skip = (page - 1) * limit;
+
+        // const sortBy = req.query.sortBy as string | undefined;
+        // const sortOrder = req.query.sortOrder as string | undefined;
+
+        const { page, limit, skip, sortBy, sortOrder } =
+            paginationSortingHelper(req.query);
+        // console.log(options);
 
         const result = await postServices.getAllPost({
             search: searchString,
@@ -33,6 +44,11 @@ const getAllPost = async (req: Request, res: Response) => {
             isFeatured,
             status,
             authorId,
+            page,
+            limit,
+            skip,
+            sortBy,
+            sortOrder,
         });
         return res.status(200).json(result);
     } catch (error) {
@@ -43,10 +59,28 @@ const getAllPost = async (req: Request, res: Response) => {
     }
 };
 
+const getPostById = async(req:Request, res:Response) =>{
+    try{
+        const {id} = req.params;
+
+        if(!id) {
+            throw new Error("PostId is required.")
+        }
+        const result = await postServices.getPostById(id as string);
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        return res.status(400).json({
+            error: "Get Post by id failed",
+            details: error
+        })
+    }
+}
+
 const createPost = async (req: Request, res: Response) => {
     try {
         const user = req.user;
-        console.log("user in create-post-controller : ", { user });
+        // console.log("user in create-post-controller : ", { user });
         if (!req.user) {
             return res.status(401).json({
                 error: "Unauthorized access",
@@ -68,4 +102,5 @@ const createPost = async (req: Request, res: Response) => {
 export const postController = {
     createPost,
     getAllPost,
+    getPostById,
 };
