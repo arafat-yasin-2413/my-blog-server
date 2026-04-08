@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tsx watch src/server.ts",
+    "dev": "node api.js && npx tsx watch src/server.ts",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
   },
   "keywords": [],
@@ -29,7 +29,9 @@
     "@prisma/client": "^7.6.0",
     "better-auth": "^1.5.6",
     "cors": "^2.8.6",
+    "dotenv": "^8.2.0",
     "express": "^5.2.1",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^8.0.4",
     "pg": "^8.20.0"
   }
