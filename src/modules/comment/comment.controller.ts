@@ -45,37 +45,59 @@ const createComment = async (req: Request, res: Response) => {
     }
 };
 
-const deleteComment = async(req: Request, res:Response)=>{
-    try{
+const deleteComment = async (req: Request, res: Response) => {
+    try {
         const user = req.user;
-        const {commentId} = req.params;
+        const { commentId } = req.params;
 
-        const result = await commentServices.deleteComment(commentId as string, user?.id as string);
+        const result = await commentServices.deleteComment(
+            commentId as string,
+            user?.id as string,
+        );
         return res.status(200).json("Comment deleted successfully");
-    }
-    catch(error){
+    } catch (error) {
         return res.status(400).json({
             error: "Comemnt Deletion Failed",
-            details: error
-        })
+            details: error,
+        });
     }
-}
+};
 
-const updateComment = async(req: Request, res:Response)=>{
-    try{
+const updateComment = async (req: Request, res: Response) => {
+    try {
         const user = req.user;
-        const {commentId} = req.params;
+        const { commentId } = req.params;
 
-        const result = await commentServices.updateComment(commentId as string,req.body, user?.id as string);
+        const result = await commentServices.updateComment(
+            commentId as string,
+            req.body,
+            user?.id as string,
+        );
         return res.status(200).json(result);
-    }
-    catch(error){
+    } catch (error) {
         return res.status(400).json({
             error: "Comemnt Update Failed",
-            details: error
-        })
+            details: error,
+        });
     }
-}
+};
+
+const moderateComment = async (req: Request, res: Response) => {
+    try {
+        const { commentId } = req.params;
+
+        const result = await commentServices.moderateComment(
+            commentId as string,
+            req.body,
+        );
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(400).json({
+            error: "Comment moderation failed",
+            details: error,
+        });
+    }
+};
 
 export const commmentControllers = {
     createComment,
@@ -83,4 +105,5 @@ export const commmentControllers = {
     getCommentsByAuthorId,
     deleteComment,
     updateComment,
+    moderateComment,
 };
