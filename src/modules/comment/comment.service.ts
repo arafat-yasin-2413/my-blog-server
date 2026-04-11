@@ -63,8 +63,33 @@ const createComment = async (payload: {
     return result;
 };
 
+const deleteComment = async(commentId: string, authorId: string) =>{
+
+    const commentData = await prisma.comment.findFirst({
+        where: {
+            id: commentId,
+            authorId
+        },
+        select: {
+            id: true,
+            content: true,
+        }
+    })
+
+    if(!commentData) {
+        throw new Error("Invalid comment Id or Author Id. Try after Logging in Again.");
+    }
+
+    return await prisma.comment.delete({
+        where: {
+            id: commentData.id
+        }
+    })
+}
+
 export const commentServices = {
     createComment,
     getCommentById,
     getCommentsByAuthorId,
+    deleteComment,
 };
