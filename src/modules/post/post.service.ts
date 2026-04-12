@@ -220,9 +220,34 @@ const createPost = async (
     return result;
 };
 
+const updatePost = async(postId: string, authorId: string, data: Partial<Post>) =>{
+    const postData = await prisma.post.findUniqueOrThrow({
+        where: {
+            id: postId
+        },
+        select: {
+            id: true,
+            authorId: true
+        }
+    })
+
+    if(postData.authorId !== authorId) {
+        throw new Error("You are not the owner of this post. So, you can't update.")
+    }
+
+    const result = await prisma.post.update({
+        where: {
+            id: postId
+        },
+        data
+    })
+    return result;
+}
+
 export const postServices = {
     createPost,
     getAllPost,
     getPostById,
     getMyPost,
+    updatePost,
 };
