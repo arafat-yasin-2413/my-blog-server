@@ -6,9 +6,11 @@ const router = express.Router();
 
 router.get("/", postController.getAllPost);
 router.post("/", auth(UserRole.USER, UserRole.ADMIN), postController.createPost);
+router.get("/dashboard/stats", auth(UserRole.ADMIN), postController.getStats);
 router.get("/:id",postController.getPostById);
 router.get("/user/my-posts",auth(UserRole.USER, UserRole.ADMIN), postController.getMyPost);
 router.patch("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.updatePost);
 router.delete("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.deletePost);
+
 
 export const postRouter: Router = router;

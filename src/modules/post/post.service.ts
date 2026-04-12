@@ -1,6 +1,7 @@
 import { CommentStatus, Post, PostStatus } from "../../generated/prisma/client";
 import { PostWhereInput } from "../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
+import { UserRole } from "../../middlewares/auth";
 
 const getAllPost = async ({
     search,
@@ -161,19 +162,18 @@ const getPostById = async (id: string) => {
 };
 
 const getMyPost = async (authorId: string) => {
-
     await prisma.user.findUniqueOrThrow({
         where: {
             id: authorId,
-            status: "ACTIVE"
+            status: "ACTIVE",
         },
         select: {
             id: true,
             name: true,
             email: true,
             status: true,
-        }
-    })
+        },
+    });
 
     const result = await prisma.post.findMany({
         where: {
@@ -223,65 +223,132 @@ const createPost = async (
 // user can only update owned post. -- can't update 'isFeatured' field
 // admin can update any post
 
-const updatePost = async(postId: string, authorId: string, isAdmin: boolean, data: Partial<Post>) =>{
-    const postData = await prisma.post.findUniqueOrThrow({
-        where: {
-            id: postId
-        },
-        select: {
-            id: true,
-            authorId: true
-        }
-    });
-
-
-    // console.log({postId, authorId, isAdmin});
-
-    if(!isAdmin &&  (postData.authorId !== authorId)) {
-        throw new Error("You are not the owner of this post. So, you can't update.")
-    }
-
-    if(!isAdmin) {
-        delete data.isFeatured
-    }
-
-    const result = await prisma.post.update({
-        where: {
-            id: postId
-        },
-        data
-    })
-    return result;
-}
-
-// Role: USER ==> nijer post delete korte parbe.
-// Role: ADMIN ==> sobar post delete korte parbe.
-
-const deletePost = async(postId: string, authorId: string, isAdmin: boolean) =>{
+const updatePost = async (
+    postId: string,
+    authorId: string,
+    isAdmin: boolean,
+    data: Partial<Post>,
+) => {
     const postData = await prisma.post.findUniqueOrThrow({
         where: {
             id: postId,
         },
         select: {
-            id:true,
-            title: true,
+            id: true,
             authorId: true,
-        }
+        },
     });
 
-    console.log({postId, authorId, isAdmin});
-    
-    if(!isAdmin && (postData.authorId !== authorId)) {
-        throw new Error("You are not the owner of this post. So, you can't delete this.");
+    // console.log({postId, authorId, isAdmin});
+
+    if (!isAdmin && postData.authorId !== authorId) {
+        throw new Error(
+            "You are not the owner of this post. So, you can't update.",
+        );
+    }
+
+    if (!isAdmin) {
+        delete data.isFeatured;
+    }
+
+    const result = await prisma.post.update({
+        where: {
+            id: postId,
+        },
+        data,
+    });
+    return result;
+};
+
+// Role: USER ==> nijer post delete korte parbe.
+// Role: ADMIN ==> sobar post delete korte parbe.
+
+const deletePost = async (
+    postId: string,
+    authorId: string,
+    isAdmin: boolean,
+) => {
+    const postData = await prisma.post.findUniqueOrThrow({
+        where: {
+            id: postId,
+        },
+        select: {
+            id: true,
+            title: true,
+            authorId: true,
+        },
+    });
+
+    console.log({ postId, authorId, isAdmin });
+
+    if (!isAdmin && postData.authorId !== authorId) {
+        throw new Error(
+            "You are not the owner of this post. So, you can't delete this.",
+        );
     }
 
     return await prisma.post.delete({
         where: {
             id: postData.id,
-            
-        }
-    })
-}
+        },
+    });
+};
+
+// eikhane multiple table theke data ante hobe.
+// so , multiple query korte hobe.
+// ar multiple query er jonno TRANSACTION byabohar korte hobe.
+const getStats = async () => {
+    return await prisma.$transaction(async (tx) => {
+        const [
+            totalPosts,
+            publishedPosts,
+            draftedPosts,
+            archivedPosts,
+            totalComments,
+            approvedComments,
+            rejectedComments,
+            totalUsers,
+            adminCount,
+            userCount,
+            totalViews,
+        ] = await Promise.all([
+            await tx.post.count(),
+            await tx.post.count({
+                where: { status: PostStatus.PUBLISHED },
+            }),
+            await tx.post.count({ where: { status: PostStatus.DRAFT } }),
+            await tx.post.count({ where: { status: PostStatus.ARCHIVED } }),
+            await tx.comment.count(),
+            await tx.comment.count({where: {status: CommentStatus.APPROVED,},}),
+            await tx.comment.count({where: { status: CommentStatus.REJECTED },}),
+            await tx.user.count(),
+            await tx.user.count({ where: { role: UserRole.ADMIN } }),
+            await tx.user.count({ where: { role: UserRole.USER } }),
+            await tx.post.aggregate({_sum: {views: true}})
+        ]);
+
+        return {
+            totalPosts,
+            publishedPosts,
+            draftedPosts,
+            archivedPosts,
+            totalComments,
+            approvedComments,
+            rejectedComments,
+            totalUsers,
+            adminCount,
+            userCount,
+            totalViews: totalViews._sum.views,
+        };
+    });
+
+    // postCount
+    // published post koyta
+    // draft post koyta ache
+
+    // total comment koyta ache
+    // total views koyta ache?
+};
 
 export const postServices = {
     createPost,
@@ -290,4 +357,5 @@ export const postServices = {
     getMyPost,
     updatePost,
     deletePost,
+    getStats,
 };
