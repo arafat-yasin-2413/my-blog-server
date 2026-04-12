@@ -220,7 +220,10 @@ const createPost = async (
     return result;
 };
 
-const updatePost = async(postId: string, authorId: string, data: Partial<Post>) =>{
+// user can only update owned post. -- can't update 'isFeatured' field
+// admin can update any post
+
+const updatePost = async(postId: string, authorId: string, isAdmin: boolean, data: Partial<Post>) =>{
     const postData = await prisma.post.findUniqueOrThrow({
         where: {
             id: postId
@@ -229,10 +232,17 @@ const updatePost = async(postId: string, authorId: string, data: Partial<Post>) 
             id: true,
             authorId: true
         }
-    })
+    });
 
-    if(postData.authorId !== authorId) {
+
+    console.log({postId, authorId, isAdmin});
+
+    if(!isAdmin &&  (postData.authorId !== authorId)) {
         throw new Error("You are not the owner of this post. So, you can't update.")
+    }
+
+    if(!isAdmin) {
+        delete data.isFeatured
     }
 
     const result = await prisma.post.update({
