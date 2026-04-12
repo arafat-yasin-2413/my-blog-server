@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { postServices } from "./post.service";
 import { PostStatus } from "../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+import { error } from "node:console";
+import { UserRole } from "../../middlewares/auth";
 
 const getAllPost = async (req: Request, res: Response) => {
     try {
@@ -59,23 +61,41 @@ const getAllPost = async (req: Request, res: Response) => {
     }
 };
 
-const getPostById = async(req:Request, res:Response) =>{
-    try{
-        const {id} = req.params;
+const getPostById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
 
-        if(!id) {
-            throw new Error("PostId is required.")
+        if (!id) {
+            throw new Error("PostId is required.");
         }
         const result = await postServices.getPostById(id as string);
         return res.status(200).json(result);
-    }
-    catch(error) {
+    } catch (error) {
         return res.status(400).json({
             error: "Get Post by id failed",
-            details: error
-        })
+            details: error,
+        });
     }
-}
+};
+
+const getMyPost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        console.log({ user });
+
+        if (!user) {
+            throw new Error("You are unauthorized");
+        }
+
+        const result = await postServices.getMyPost(user?.id);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(400).json({
+            error: "Getting My Post failed",
+            details: error,
+        });
+    }
+};
 
 const createPost = async (req: Request, res: Response) => {
     try {
@@ -99,8 +119,84 @@ const createPost = async (req: Request, res: Response) => {
     }
 };
 
+const updatePost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new Error("You are unauthorized");
+        }
+
+        const { postId } = req.params;
+        const isAdmin = user.role === UserRole.ADMIN;
+
+        console.log({ user });
+
+        const result = await postServices.updatePost(
+            postId as string,
+            user?.id,
+            isAdmin,
+            req.body,
+        );
+        return res.status(200).json(result);
+    } catch (error) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Post update failed";
+        return res.status(400).json({
+            error: errorMessage,
+            details: error,
+        });
+    }
+};
+
+const deletePost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new Error("You are unauthorized");
+        }
+
+        const { postId } = req.params;
+        const isAdmin = user.role === UserRole.ADMIN;
+
+        console.log({ user });
+
+        const result = await postServices.deletePost(
+            postId as string,
+            user?.id,
+            isAdmin,
+        );
+        return res.status(200).json(result);
+    } catch (error) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Post delete failed";
+        return res.status(400).json({
+            error: errorMessage,
+            details: error,
+        });
+    }
+};
+
+
+const getStats = async (req: Request, res: Response) => {
+    try {
+        const result = await postServices.getStats();
+        return res.status(200).json(result);
+    } catch (error) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Getting statistics failed";
+        return res.status(400).json({
+            error: errorMessage,
+            details: error,
+        });
+    }
+};
+
 export const postController = {
     createPost,
     getAllPost,
     getPostById,
+    getMyPost,
+    updatePost,
+    deletePost,
+    getStats
 };
