@@ -175,11 +175,20 @@ const getMyPost = async (authorId: string) => {
         },
     });
 
-    const total = await prisma.post.count({
-        where: {
-            authorId,
+    // const total = await prisma.post.count({
+    //     where: {
+    //         authorId,
+    //     },
+    // });
+
+    const total = await prisma.post.aggregate({
+        _count: {
+            id: true
         },
-    });
+        where: {
+            authorId
+        }
+    })
 
     return { data: result, total };
 };
