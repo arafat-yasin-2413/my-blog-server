@@ -235,7 +235,7 @@ const updatePost = async(postId: string, authorId: string, isAdmin: boolean, dat
     });
 
 
-    console.log({postId, authorId, isAdmin});
+    // console.log({postId, authorId, isAdmin});
 
     if(!isAdmin &&  (postData.authorId !== authorId)) {
         throw new Error("You are not the owner of this post. So, you can't update.")
@@ -254,10 +254,40 @@ const updatePost = async(postId: string, authorId: string, isAdmin: boolean, dat
     return result;
 }
 
+// Role: USER ==> nijer post delete korte parbe.
+// Role: ADMIN ==> sobar post delete korte parbe.
+
+const deletePost = async(postId: string, authorId: string, isAdmin: boolean) =>{
+    const postData = await prisma.post.findUniqueOrThrow({
+        where: {
+            id: postId,
+        },
+        select: {
+            id:true,
+            title: true,
+            authorId: true,
+        }
+    });
+
+    console.log({postId, authorId, isAdmin});
+    
+    if(!isAdmin && (postData.authorId !== authorId)) {
+        throw new Error("You are not the owner of this post. So, you can't delete this.");
+    }
+
+    return await prisma.post.delete({
+        where: {
+            id: postData.id,
+            
+        }
+    })
+}
+
 export const postServices = {
     createPost,
     getAllPost,
     getPostById,
     getMyPost,
     updatePost,
+    deletePost,
 };
