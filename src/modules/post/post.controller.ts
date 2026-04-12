@@ -80,6 +80,7 @@ const getPostById = async (req: Request, res: Response) => {
 const getMyPost = async (req: Request, res: Response) => {
     try {
         const user = req.user;
+        console.log({user});
 
         if (!user) {
             throw new Error("You are unauthorized");
@@ -89,7 +90,7 @@ const getMyPost = async (req: Request, res: Response) => {
         return res.status(200).json(result);
     } catch (error) {
         return res.status(400).json({
-            error: "Geting My Post failed",
+            error: "Getting My Post failed",
             details: error,
         });
     }
