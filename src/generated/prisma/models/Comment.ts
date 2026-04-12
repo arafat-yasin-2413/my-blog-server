@@ -349,6 +349,11 @@ export type CommentUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type CommentNullableScalarRelationFilter = {
+  is?: Prisma.CommentWhereInput | null
+  isNot?: Prisma.CommentWhereInput | null
+}
+
 export type CommentListRelationFilter = {
   every?: Prisma.CommentWhereInput
   some?: Prisma.CommentWhereInput
@@ -357,11 +362,6 @@ export type CommentListRelationFilter = {
 
 export type CommentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type CommentNullableScalarRelationFilter = {
-  is?: Prisma.CommentWhereInput | null
-  isNot?: Prisma.CommentWhereInput | null
 }
 
 export type CommentCountOrderByAggregateInput = {
@@ -395,48 +395,6 @@ export type CommentMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type CommentCreateNestedManyWithoutPostInput = {
-  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
-  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
-  createMany?: Prisma.CommentCreateManyPostInputEnvelope
-  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-}
-
-export type CommentUncheckedCreateNestedManyWithoutPostInput = {
-  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
-  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
-  createMany?: Prisma.CommentCreateManyPostInputEnvelope
-  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-}
-
-export type CommentUpdateManyWithoutPostNestedInput = {
-  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
-  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
-  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutPostInput | Prisma.CommentUpsertWithWhereUniqueWithoutPostInput[]
-  createMany?: Prisma.CommentCreateManyPostInputEnvelope
-  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  update?: Prisma.CommentUpdateWithWhereUniqueWithoutPostInput | Prisma.CommentUpdateWithWhereUniqueWithoutPostInput[]
-  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutPostInput | Prisma.CommentUpdateManyWithWhereWithoutPostInput[]
-  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
-}
-
-export type CommentUncheckedUpdateManyWithoutPostNestedInput = {
-  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
-  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
-  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutPostInput | Prisma.CommentUpsertWithWhereUniqueWithoutPostInput[]
-  createMany?: Prisma.CommentCreateManyPostInputEnvelope
-  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
-  update?: Prisma.CommentUpdateWithWhereUniqueWithoutPostInput | Prisma.CommentUpdateWithWhereUniqueWithoutPostInput[]
-  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutPostInput | Prisma.CommentUpdateManyWithWhereWithoutPostInput[]
-  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
 }
 
 export type CommentCreateNestedOneWithoutRepliesInput = {
@@ -501,66 +459,46 @@ export type CommentUncheckedUpdateManyWithoutParentNestedInput = {
   deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
 }
 
-export type CommentCreateWithoutPostInput = {
-  id?: string
-  content: string
-  authorId: string
-  status?: $Enums.CommentStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
-  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+export type CommentCreateNestedManyWithoutPostInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
+  createMany?: Prisma.CommentCreateManyPostInputEnvelope
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
 }
 
-export type CommentUncheckedCreateWithoutPostInput = {
-  id?: string
-  content: string
-  authorId: string
-  parentId?: string | null
-  status?: $Enums.CommentStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+export type CommentUncheckedCreateNestedManyWithoutPostInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
+  createMany?: Prisma.CommentCreateManyPostInputEnvelope
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
 }
 
-export type CommentCreateOrConnectWithoutPostInput = {
-  where: Prisma.CommentWhereUniqueInput
-  create: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput>
+export type CommentUpdateManyWithoutPostNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
+  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutPostInput | Prisma.CommentUpsertWithWhereUniqueWithoutPostInput[]
+  createMany?: Prisma.CommentCreateManyPostInputEnvelope
+  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  update?: Prisma.CommentUpdateWithWhereUniqueWithoutPostInput | Prisma.CommentUpdateWithWhereUniqueWithoutPostInput[]
+  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutPostInput | Prisma.CommentUpdateManyWithWhereWithoutPostInput[]
+  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
 }
 
-export type CommentCreateManyPostInputEnvelope = {
-  data: Prisma.CommentCreateManyPostInput | Prisma.CommentCreateManyPostInput[]
-  skipDuplicates?: boolean
-}
-
-export type CommentUpsertWithWhereUniqueWithoutPostInput = {
-  where: Prisma.CommentWhereUniqueInput
-  update: Prisma.XOR<Prisma.CommentUpdateWithoutPostInput, Prisma.CommentUncheckedUpdateWithoutPostInput>
-  create: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput>
-}
-
-export type CommentUpdateWithWhereUniqueWithoutPostInput = {
-  where: Prisma.CommentWhereUniqueInput
-  data: Prisma.XOR<Prisma.CommentUpdateWithoutPostInput, Prisma.CommentUncheckedUpdateWithoutPostInput>
-}
-
-export type CommentUpdateManyWithWhereWithoutPostInput = {
-  where: Prisma.CommentScalarWhereInput
-  data: Prisma.XOR<Prisma.CommentUpdateManyMutationInput, Prisma.CommentUncheckedUpdateManyWithoutPostInput>
-}
-
-export type CommentScalarWhereInput = {
-  AND?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
-  OR?: Prisma.CommentScalarWhereInput[]
-  NOT?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
-  id?: Prisma.StringFilter<"Comment"> | string
-  content?: Prisma.StringFilter<"Comment"> | string
-  authorId?: Prisma.StringFilter<"Comment"> | string
-  postId?: Prisma.StringFilter<"Comment"> | string
-  parentId?: Prisma.StringNullableFilter<"Comment"> | string | null
-  status?: Prisma.EnumCommentStatusFilter<"Comment"> | $Enums.CommentStatus
-  createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+export type CommentUncheckedUpdateManyWithoutPostNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput> | Prisma.CommentCreateWithoutPostInput[] | Prisma.CommentUncheckedCreateWithoutPostInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutPostInput | Prisma.CommentCreateOrConnectWithoutPostInput[]
+  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutPostInput | Prisma.CommentUpsertWithWhereUniqueWithoutPostInput[]
+  createMany?: Prisma.CommentCreateManyPostInputEnvelope
+  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  update?: Prisma.CommentUpdateWithWhereUniqueWithoutPostInput | Prisma.CommentUpdateWithWhereUniqueWithoutPostInput[]
+  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutPostInput | Prisma.CommentUpdateManyWithWhereWithoutPostInput[]
+  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
 }
 
 export type CommentCreateWithoutRepliesInput = {
@@ -671,7 +609,32 @@ export type CommentUpdateManyWithWhereWithoutParentInput = {
   data: Prisma.XOR<Prisma.CommentUpdateManyMutationInput, Prisma.CommentUncheckedUpdateManyWithoutParentInput>
 }
 
-export type CommentCreateManyPostInput = {
+export type CommentScalarWhereInput = {
+  AND?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
+  OR?: Prisma.CommentScalarWhereInput[]
+  NOT?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
+  id?: Prisma.StringFilter<"Comment"> | string
+  content?: Prisma.StringFilter<"Comment"> | string
+  authorId?: Prisma.StringFilter<"Comment"> | string
+  postId?: Prisma.StringFilter<"Comment"> | string
+  parentId?: Prisma.StringNullableFilter<"Comment"> | string | null
+  status?: Prisma.EnumCommentStatusFilter<"Comment"> | $Enums.CommentStatus
+  createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+}
+
+export type CommentCreateWithoutPostInput = {
+  id?: string
+  content: string
+  authorId: string
+  status?: $Enums.CommentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+}
+
+export type CommentUncheckedCreateWithoutPostInput = {
   id?: string
   content: string
   authorId: string
@@ -679,38 +642,33 @@ export type CommentCreateManyPostInput = {
   status?: $Enums.CommentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
 }
 
-export type CommentUpdateWithoutPostInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  authorId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
-  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+export type CommentCreateOrConnectWithoutPostInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput>
 }
 
-export type CommentUncheckedUpdateWithoutPostInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  authorId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+export type CommentCreateManyPostInputEnvelope = {
+  data: Prisma.CommentCreateManyPostInput | Prisma.CommentCreateManyPostInput[]
+  skipDuplicates?: boolean
 }
 
-export type CommentUncheckedUpdateManyWithoutPostInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  authorId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type CommentUpsertWithWhereUniqueWithoutPostInput = {
+  where: Prisma.CommentWhereUniqueInput
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutPostInput, Prisma.CommentUncheckedUpdateWithoutPostInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutPostInput, Prisma.CommentUncheckedCreateWithoutPostInput>
+}
+
+export type CommentUpdateWithWhereUniqueWithoutPostInput = {
+  where: Prisma.CommentWhereUniqueInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutPostInput, Prisma.CommentUncheckedUpdateWithoutPostInput>
+}
+
+export type CommentUpdateManyWithWhereWithoutPostInput = {
+  where: Prisma.CommentScalarWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateManyMutationInput, Prisma.CommentUncheckedUpdateManyWithoutPostInput>
 }
 
 export type CommentCreateManyParentInput = {
@@ -750,6 +708,48 @@ export type CommentUncheckedUpdateManyWithoutParentInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   postId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CommentCreateManyPostInput = {
+  id?: string
+  content: string
+  authorId: string
+  parentId?: string | null
+  status?: $Enums.CommentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CommentUpdateWithoutPostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutPostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type CommentUncheckedUpdateManyWithoutPostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumCommentStatusFieldUpdateOperationsInput | $Enums.CommentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

@@ -434,6 +434,11 @@ export type PostUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type PostScalarRelationFilter = {
+  is?: Prisma.PostWhereInput
+  isNot?: Prisma.PostWhereInput
+}
+
 export type StringNullableListFilter<$PrismaModel = never> = {
   equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
   has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
@@ -490,25 +495,22 @@ export type PostSumOrderByAggregateInput = {
   views?: Prisma.SortOrder
 }
 
-export type PostScalarRelationFilter = {
-  is?: Prisma.PostWhereInput
-  isNot?: Prisma.PostWhereInput
+export type PostCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutCommentsInput, Prisma.PostUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.PostWhereUniqueInput
+}
+
+export type PostUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutCommentsInput, Prisma.PostUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.PostUpsertWithoutCommentsInput
+  connect?: Prisma.PostWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PostUpdateToOneWithWhereWithoutCommentsInput, Prisma.PostUpdateWithoutCommentsInput>, Prisma.PostUncheckedUpdateWithoutCommentsInput>
 }
 
 export type PostCreatetagsInput = {
   set: string[]
-}
-
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type EnumPostStatusFieldUpdateOperationsInput = {
@@ -526,24 +528,6 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
-export type PostCreateNestedOneWithoutCommentsInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutCommentsInput, Prisma.PostUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutCommentsInput
-  connect?: Prisma.PostWhereUniqueInput
-}
-
-export type PostUpdateOneRequiredWithoutCommentsNestedInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutCommentsInput, Prisma.PostUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutCommentsInput
-  upsert?: Prisma.PostUpsertWithoutCommentsInput
-  connect?: Prisma.PostWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PostUpdateToOneWithWhereWithoutCommentsInput, Prisma.PostUpdateWithoutCommentsInput>, Prisma.PostUncheckedUpdateWithoutCommentsInput>
 }
 
 export type PostCreateWithoutCommentsInput = {
