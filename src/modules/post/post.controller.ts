@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { postServices } from "./post.service";
 import { PostStatus } from "../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
@@ -97,7 +97,7 @@ const getMyPost = async (req: Request, res: Response) => {
     }
 };
 
-const createPost = async (req: Request, res: Response) => {
+const createPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
         // console.log("user in create-post-controller : ", { user });
@@ -112,14 +112,11 @@ const createPost = async (req: Request, res: Response) => {
         );
         res.status(201).json(result);
     } catch (error) {
-        res.status(400).json({
-            error: "Post Creation Failed",
-            details: error,
-        });
+        next(error);
     }
 };
 
-const updatePost = async (req: Request, res: Response) => {
+const updatePost = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
         if (!user) {
@@ -139,12 +136,7 @@ const updatePost = async (req: Request, res: Response) => {
         );
         return res.status(200).json(result);
     } catch (error) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Post update failed";
-        return res.status(400).json({
-            error: errorMessage,
-            details: error,
-        });
+        next(error);
     }
 };
 
