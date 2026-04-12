@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { postServices } from "./post.service";
 import { PostStatus } from "../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+import { error } from "node:console";
 
 const getAllPost = async (req: Request, res: Response) => {
     try {
@@ -59,23 +60,40 @@ const getAllPost = async (req: Request, res: Response) => {
     }
 };
 
-const getPostById = async(req:Request, res:Response) =>{
-    try{
-        const {id} = req.params;
+const getPostById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
 
-        if(!id) {
-            throw new Error("PostId is required.")
+        if (!id) {
+            throw new Error("PostId is required.");
         }
         const result = await postServices.getPostById(id as string);
         return res.status(200).json(result);
-    }
-    catch(error) {
+    } catch (error) {
         return res.status(400).json({
             error: "Get Post by id failed",
-            details: error
-        })
+            details: error,
+        });
     }
-}
+};
+
+const getMyPost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            throw new Error("You are unauthorized");
+        }
+
+        const result = await postServices.getMyPost(user?.id);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(400).json({
+            error: "Geting My Post failed",
+            details: error,
+        });
+    }
+};
 
 const createPost = async (req: Request, res: Response) => {
     try {
@@ -103,4 +121,5 @@ export const postController = {
     createPost,
     getAllPost,
     getPostById,
+    getMyPost,
 };
