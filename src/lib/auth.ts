@@ -4,7 +4,6 @@ import { prisma } from "./prisma";
 import nodemailer from "nodemailer";
 
 // nodemailer
-
 // Create a transporter using SMTP
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
